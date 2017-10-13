@@ -20,7 +20,7 @@ void draw() {
   }
   
   if(interactive != null)
-    interactive.edit();//allows for editing of the picture
+    interactive.changeFilter();//allows for editing of the picture
   
   //display save button
   save.display();

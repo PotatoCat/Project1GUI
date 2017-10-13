@@ -40,7 +40,7 @@ class IImage {//Interactive Image
       image(imgNew, x, y);
   }
 
-  void edit() {
+  void changeFilter() {
     if (firstLoop) {
       image(imgOriginal, x, y);
       firstLoop = false;

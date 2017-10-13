@@ -40,6 +40,9 @@ class IImage {//Interactive Image
       image(imgNew, x, y);
   }
 
+
+//------------------------------------------------------------------------------------
+//Filters
   void changeFilter() {
     if (firstLoop) {
       image(imgOriginal, x, y);
@@ -81,7 +84,7 @@ class IImage {//Interactive Image
     }
   }
 
-  void greyscale() {//private method to perform the greyscale function on an image
+  private void greyscale() {//private method to perform the greyscale function on an image
     loadPixels();
     float grey;
     for (int i = 0; i < imgHeight; i++) {
@@ -99,7 +102,7 @@ class IImage {//Interactive Image
     updatePixels();
   }
 
-  void contrast() {
+  private void contrast() {
     loadPixels();
     for (int i = 0; i < imgHeight; i++) {
       for (int j = 0; j < imgWidth; j++) {
@@ -140,12 +143,12 @@ class IImage {//Interactive Image
     return rgb;
   }
 
-  void blur() {
+  private void blur() {
     float[][] blurKernel = {{.0625, .125, .0625}, {.125, .25, .125}, {.0625, .125, .0625}};
     useKernel(blurKernel, imgNew);
   }
 
-  void edgeDetection() {
+  private void edgeDetection() {
     float[][] edgeVert = {{1, 2, 1}, {0, 0, 0}, {-1, -2, -1}};
     float[][] edgeHor = {{1, 0, -1}, {2, 0, -2}, {1, 0, -1}};
     color c1, c2;
@@ -169,7 +172,7 @@ class IImage {//Interactive Image
     }
   }
 
-  void sharpen() {
+  private void sharpen() {
     float[][] sharpen = {{0, -1, 0}, {-1, 5, -1}, {0, -1, 0}};
     useKernel(sharpen, imgNew);
   }

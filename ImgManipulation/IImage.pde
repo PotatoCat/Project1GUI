@@ -47,31 +47,31 @@ class IImage {//Interactive Image
     }
     if (key == '1' && currentMode != 1) {
       currentMode = 1;
-      imgNew = createImage(width, height, ARGB);
+      imgNew = createImage(imgWidth, imgHeight, ARGB);
       greyscale();
       image(imgNew, x, y);
     }
     if (key == '2' && currentMode != 2) {
       currentMode = 2;
-      imgNew = createImage(width, height, ARGB);
+      imgNew = createImage(imgWidth, imgHeight, ARGB);
       contrast();
       image(imgNew, x, y);
     }
     if (key == '3' && currentMode != 3) {
       currentMode = 3;
-      imgNew = createImage(width, height, ARGB);
+      imgNew = createImage(imgWidth, imgHeight, ARGB);
       blur();
       image(imgNew, x, y);
     }
     if (key == '4' && currentMode != 4) {
       currentMode = 4;
-      imgNew = createImage(width, height, ARGB);
+      imgNew = createImage(imgWidth, imgHeight, ARGB);
       edgeDetection();
       image(imgNew, x, y);
     }
     if (key == '5' && currentMode != 5) {
       currentMode = 5;
-      imgNew = createImage(width, height, ARGB);
+      imgNew = createImage(imgWidth, imgHeight, ARGB);
       sharpen();
       image(imgNew, x, y);
     }

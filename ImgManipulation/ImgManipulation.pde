@@ -1,4 +1,5 @@
 PImage img;
+IImage interactive;
 String fileDest;
 button save;
 boolean wasSaveClicked;
@@ -13,9 +14,13 @@ void setup() {
 
 void draw() {
   if(img != null){
-    image(img,-1,49);
-    surface.setSize(img.width-1, img.height+49);
+    //image(img,-1,49);
+    interactive.display();
+    surface.setSize(interactive.imgWidth, interactive.imgHeight+50);
   }
+  
+  if(interactive != null)
+    interactive.edit();//allows for editing of the picture
   
   //display save button
   save.display();
@@ -45,8 +50,11 @@ void keyPressed(){
       }
     } else if (keyCode == DELETE){
       fileDest = "";
-    } else if (keyCode == ENTER){
-      img.save(fileDest);
+    } else if (keyCode == ENTER && interactive.currentMode != 0){
+      interactive.imgNew.save(fileDest);
+      wasSaveClicked = false;
+    } else if (keyCode == ENTER && interactive.currentMode == 0){
+      interactive.imgOriginal.save(fileDest);
       wasSaveClicked = false;
     } else if (keyCode != SHIFT && keyCode != CONTROL && keyCode != ALT) {
       fileDest = fileDest + key;
@@ -60,6 +68,6 @@ void fileSelected(File selection) {
   } else {
     println("User selected " + selection.getAbsolutePath());
     img = loadImage(selection.getAbsolutePath());
-    
+    interactive = new IImage(0, 50, img);//move this line of code elsewhere if necessarry, supposed to create an IImage based on the new PImage
   }
 }

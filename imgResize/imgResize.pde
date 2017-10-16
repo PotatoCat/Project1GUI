@@ -1,5 +1,6 @@
 PImage testImg;
 String imageFileName = "dogHappy.jpg";
+UnitTest unitTest;
 Button applyBTN;
 
 void setup(){
@@ -7,6 +8,7 @@ void setup(){
   size(1366, 768);
   background(50);
   testImg = loadImage(imageFileName);
+  unitTest = new UnitTest();
   
   applyBTN = new Button(0,0,150,50, "Apply");
   //surface.setSize(1377, 760);
@@ -35,7 +37,7 @@ void setLabels(PImage img, int imgXPos, int imgYPos){
   text(("H: " + img.height + " W: " + img.width), imgXPos,imgYPos + img.height + 15);
 }
 
-void resizeByWidth(PImage img, float w){
+public void resizeByWidth(PImage img, float w){
   float ratio = (float(img.width)/float(img.height));
   img.resize(int(w), int(w/ratio));
 }
@@ -47,9 +49,13 @@ void resizeByHeight(PImage img, float h){
 
 void mousePressed(){
   if(applyBTN.mouseOver()){
-    if(testImg.height > 400) 
-      resizeByWidth(testImg,400);
+    if(testImg.height > 400){
+      //resizeByWidth(testImg,400);
+      unitTest.testResizeByWidth(testImg, 400);
+    }
     else
       resizeByWidth(testImg,750);
+      
+    
     }
 }

@@ -17,6 +17,9 @@ class button {
   }
   
   void display(){
+    textAlign(BASELINE);
+    rectMode(CENTER);
+    textSize(12);
     fill(255);
     rect(this.x,this.y, this.w, this.h); 
     fill(0);

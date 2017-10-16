@@ -1,6 +1,6 @@
 class IImage {//Interactive Image
-  int x;
-  int y;
+  float x;
+  float y;
   PImage imgOriginal;
   PImage imgNew;
 
@@ -40,6 +40,14 @@ class IImage {//Interactive Image
       image(imgNew, x, y);
   }
 
+  void display(float xPos, float yPos) {
+    x = xPos;
+    y = yPos;
+    if(currentMode == 0)
+      image(imgOriginal, x, y);
+    else
+      image(imgNew, x, y);
+  }
 
 //------------------------------------------------------------------------------------
 //Filters

@@ -35,7 +35,21 @@ void setLabels(PImage img, int imgXPos, int imgYPos){
   text(("H: " + img.height + " W: " + img.width), imgXPos,imgYPos + img.height + 15);
 }
 
-void mousePressed(){
-  if(applyBTN.mouseOver()){ background(#6BC4C3);}
+void resizeByWidth(PImage img, float w){
+  float ratio = (float(img.width)/float(img.height));
+  img.resize(int(w), int(w/ratio));
+}
 
+void resizeByHeight(PImage img, float h){
+  float ratio = (float(img.width)/float(img.height));
+  img.resize(int(h*ratio), int(h));
+}
+
+void mousePressed(){
+  if(applyBTN.mouseOver()){
+    if(testImg.height > 400) 
+      resizeByWidth(testImg,400);
+    else
+      resizeByWidth(testImg,750);
+    }
 }

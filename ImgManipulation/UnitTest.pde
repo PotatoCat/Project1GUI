@@ -3,6 +3,7 @@
 
 public class UnitTest{
   PImage unitTestImg = loadImage("dogHappy.jpg");
+  IImage test;
   
   public void testResizeByWidth(PImage img, float w){
     // original width and height
@@ -16,6 +17,12 @@ public class UnitTest{
     //Assert.assertEquals(testHeight, newHeight, 0.0001);
     assert int(testHeight) == int(newHeight) : "testHeight must equal " + int(testHeight) + ", but newHeight = " + int(newHeight);
   }
+  
+  public void testIImageContructor(){
+    
+  }
+  
+
   
   public void runUnitTests(){
     testResizeByWidth(unitTestImg, 400);

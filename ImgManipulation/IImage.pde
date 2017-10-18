@@ -16,8 +16,10 @@ class IImage {//Interactive Image
   boolean firstLoop = true; //used to draw the initial image once so that unspecified keys do not reset the image
 
   IImage(int x, int y, PImage img) {
+    println("constructing " + currentMode);
     this.x = x;
     this.y = y;
+    assert img != null: "img is null in Iimage constructor";
     imgOriginal = img.copy();
     imgWidth = img.width;
     imgHeight = img.height;

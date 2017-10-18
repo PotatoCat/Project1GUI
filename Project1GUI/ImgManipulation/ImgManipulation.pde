@@ -89,6 +89,7 @@ void fileSelected(File selection) {
     img = loadImage(selection.getAbsolutePath());
     interactive = new IImage(0, 50, img);//move this line of code elsewhere if necessarry, supposed to create an IImage based on the new PImage
     originalWidth = img.width;
+    delay(1000);
   }
 }
 

@@ -27,4 +27,10 @@ public class UnitTest{
   public void runUnitTests(){
     testResizeByWidth(unitTestImg, 400);
   }
+  
+  // Methods being Tested
+  public void resizeByWidth(PImage img, float w) {
+  float ratio = (float(img.width)/float(img.height));
+  img.resize(int(w), int(w/ratio));
+}
 }

@@ -6,9 +6,8 @@ Save saveFunction;
 // Added by Anna
 UnitTest unitTest;
 HoverButton resizeBTN;
-PImage temp;
-boolean resized = false;
 float originalWidth;
+boolean resized = false;
 
 void setup() {
   selectInput("Select a file to process:", "fileSelected");
@@ -28,17 +27,8 @@ void draw() {
   //assert interactive != null : "interactive is null in draw";
   if (img != null && interactive != null) {
     //image(img,-1,49);
-    if (interactive.currentMode == 0) { 
-      temp = interactive.imgOriginal;
-    } else {
-      temp = interactive.imgNew;
-    }
-
-    if (interactive.imgNew != null && interactive.imgNew.width != interactive.imgWidth) { 
-      resizeByWidth(interactive.imgNew, interactive.imgWidth);
-    }
-    interactive.display(100, height/2-(temp.height/2));
-    setLabels(temp, 100, height/2-(temp.height/2));
+    interactive.display(100, height/2-(interactive.imgHeight/2));
+    //setLabels(temp, 100, height/2-(temp.height/2));
     resizeBTN.display(width-280, height/2);
     //surface.setSize(interactive.imgWidth, interactive.imgHeight+50);
   }
@@ -56,29 +46,16 @@ void mouseClicked() {
   if (savebutton.mouseOver()) {
     saveFunction.flip();
   }
-
-  // code from imgResize, will reorganize into a method later
-  if (resizeBTN.mouseOver()) {
-    if (!resized) {
-      resizeByWidth(interactive.imgOriginal, originalWidth*0.5);
-      if (interactive.imgNew != null) {
-        resizeByWidth(interactive.imgNew, originalWidth*0.5);
+    if (resizeBTN.mouseOver()) {
+      originalWidth = interactive.imgOriginalReset.width;
+      if (!resized) {
+        interactive.resizeByWidth(originalWidth*0.5);
+        resized = true;
+      } else {
+        interactive.resizeByWidth(originalWidth);
+        resized = false;
       }
-      interactive.imgWidth = interactive.imgOriginal.width;
-      interactive.imgHeight = interactive.imgOriginal.height;
-      //resizeByWidth(interactive.imgNew,400);
-      resized = true;
-      unitTest.runUnitTests();
-    } else {
-      resizeByWidth(interactive.imgOriginal, originalWidth);
-      if (interactive.imgNew != null) {
-        resizeByWidth(interactive.imgNew, originalWidth);
-      }
-      interactive.imgWidth = interactive.imgOriginal.width;
-      interactive.imgHeight = interactive.imgOriginal.height;
-      resized = false;
     }
-  }
 }
 
 void keyPressed() {
@@ -102,40 +79,4 @@ void fileSelected(File selection) {
   assert interactive != null: 
     "interactive is null";
   }
-}
-
-
-// code from imgResize, will organize into a separate class/method later
-void setLabels(PImage img, int imgXPos, int imgYPos) {
-
-  fill(255);
-  noStroke();
-
-  // Image Dimension Title
-  textAlign(CENTER);
-  textSize(30);
-  //text("Image Dimensions", width-200, height*.15);
-
-  // Instructions
-  text("Instructions", width-200, height*.15);
-  textSize(16);
-  textAlign(LEFT);
-  text("Press 0 for the original image", width-300, 200);
-  text("Press 1-5 for various filters", width-300, 240);
-  text("Press Resize button to toggle size", width-300, 280);
-
-  // Height and Width subLabels
-  textAlign(LEFT);
-  textSize(15);
-  text(("H: " + img.height + " W: " + img.width), imgXPos, imgYPos + img.height + 15);
-}
-
-public void resizeByWidth(PImage img, float w) {
-  float ratio = (float(img.width)/float(img.height));
-  img.resize(int(w), int(w/ratio));
-}
-
-void resizeByHeight(PImage img, float h) {
-  float ratio = (float(img.width)/float(img.height));
-  img.resize(int(h*ratio), int(h));
 }

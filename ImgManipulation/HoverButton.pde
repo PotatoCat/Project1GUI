@@ -2,6 +2,8 @@ public class HoverButton{
   
   private float x, y, w, h;
   private final String label;
+  private color highlightColor = #8BD9FF;
+  private color buttonFillColor = color(0,0,0,255*0.75);
   
   public HoverButton(float x, float y, float w, float h, String label){
     this.x = x;
@@ -18,32 +20,39 @@ public class HoverButton{
   }
   
   void display(){
-    fill(50,50,50,25);
+    // Rectangle
+    fill(0,0,0,255*0.75);
     stroke(255);
+    if(mouseOver()) stroke(highlightColor);
     rectMode(CORNER);
     rect(x,y,w,h);
     
+    // Text Label
     fill(255);
     noStroke();
     textAlign(CENTER);
     textSize(20);
-    if(mouseOver()) fill(#8BD9FF);
+    if(mouseOver()) fill(highlightColor);
     text(label, x+w/2, y+h/2+7);  
   }
   
-    void display(float xPos, float yPos){
+  void display(float xPos, float yPos){
     x = xPos;
     y = yPos;
-    fill(50,50,50,25);
+    
+    // Rectangle
+    fill(buttonFillColor);
     stroke(255);
+    if(mouseOver()) stroke(highlightColor);
     rectMode(CORNER);
     rect(x,y,w,h);
     
+    // Text Label
     fill(255);
     noStroke();
     textAlign(CENTER);
     textSize(20);
-    if(mouseOver()) fill(#8BD9FF);
+    if(mouseOver()) fill(highlightColor);
     text(label, x+w/2, y+h/2+7);  
   }
 }

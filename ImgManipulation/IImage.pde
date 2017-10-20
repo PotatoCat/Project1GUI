@@ -16,6 +16,9 @@ class IImage {//Interactive Image
   int imgHeight;
   int currentMode = 0;
   boolean firstLoop = true; //used to draw the initial image once so that unspecified keys do not reset the image
+  
+  int mode = 0;
+  float sliderValue = 0;
 
   IImage(int x, int y, PImage img) {
     println("constructing " + currentMode);
@@ -71,7 +74,7 @@ class IImage {//Interactive Image
       image(imgOriginal, x, y);
       firstLoop = false;
     }
-    if (key == '1' && currentMode != 1) {
+    if (mode == 1) {
       currentMode = 1;
       imgNew = createImage(imgWidth, imgHeight, ARGB);
       imgNewReset = createImage(imgOriginalReset.width, imgOriginalReset.height, ARGB);
@@ -79,7 +82,7 @@ class IImage {//Interactive Image
       greyscale(imgOriginalReset, imgNewReset);
       image(imgNew, x, y);
     }
-    if (key == '2' && currentMode != 2) {
+    if (mode == 2) {
       currentMode = 2;
       imgNew = createImage(imgWidth, imgHeight, ARGB);
       imgNewReset = createImage(imgOriginalReset.width, imgOriginalReset.height, ARGB);
@@ -87,7 +90,7 @@ class IImage {//Interactive Image
       contrast(imgOriginalReset, imgNewReset);
       image(imgNew, x, y);
     }
-    if (key == '3' && currentMode != 3) {
+    if (mode == 3) {
       currentMode = 3;
       imgNew = createImage(imgWidth, imgHeight, ARGB);
       imgNewReset = createImage(imgOriginalReset.width, imgOriginalReset.height, ARGB);
@@ -95,7 +98,7 @@ class IImage {//Interactive Image
       blur(imgOriginalReset, imgNewReset);
       image(imgNew, x, y);
     }
-    if (key == '4' && currentMode != 4) {
+    if (mode == 4) {
       currentMode = 4;
       imgNew = createImage(imgWidth, imgHeight, ARGB);
       imgNewReset = createImage(imgOriginalReset.width, imgOriginalReset.height, ARGB);
@@ -103,7 +106,7 @@ class IImage {//Interactive Image
       edgeDetection(imgOriginalReset, imgNewReset);
       image(imgNew, x, y);
     }
-    if (key == '5' && currentMode != 5) {
+    if (mode == 5) {
       currentMode = 5;
       imgNew = createImage(imgWidth, imgHeight, ARGB);
       imgNewReset = createImage(imgOriginalReset.width, imgOriginalReset.height, ARGB);
@@ -111,7 +114,7 @@ class IImage {//Interactive Image
       sharpen(imgOriginalReset, imgNewReset);
       image(imgNew, x, y);
     }
-    if (key == '0' && currentMode != 0) {
+    if (mode == 0) {
       currentMode = 0;
       image(imgOriginal, x, y);
     }
@@ -136,19 +139,40 @@ class IImage {//Interactive Image
   }
 
   private void contrast(PImage imgO, PImage imgN) {
-    loadPixels();
-    for (int i = 0; i < imgO.height; i++) {
-      for (int j = 0; j < imgO.width; j++) {
-        index = i + j*imgO.height;
-        c = imgO.pixels[index];
-        red = contrastHelp(red(c));
-        green = contrastHelp(green(c));
-        blue = contrastHelp(blue(c));
-        c = color(red, green, blue);
-        imgN.pixels[index] = c;
+  colorMode(HSB);
+  imgO.loadPixels();
+  imgN.loadPixels();
+  for(int x = 0; x < img.width; x++){
+    for(int y = 0; y < img.height; y++){
+      int index = x + img.width*y;
+      float hue = hue(img.pixels[index]);
+      float saturation = saturation(img.pixels[index]);
+      float brightness = brightness(img.pixels[index]);
+      if(brightness < 123){
+        brightness = brightness - sliderValue*100;
+      }else{
+        brightness = brightness + sliderValue*100;
+      brightness = constrain(abs(brightness), 0, 255);
       }
+      imgN.pixels[index] = color(hue, saturation, brightness);
     }
-    updatePixels();
+  }
+  imgN.updatePixels();
+  colorMode(RGB);
+    
+    //loadPixels();
+    //for (int i = 0; i < imgO.height; i++) {
+    //  for (int j = 0; j < imgO.width; j++) {
+    //    index = i + j*imgO.height;
+    //    c = imgO.pixels[index];
+    //    red = contrastHelp(red(c));
+    //    green = contrastHelp(green(c));
+    //    blue = contrastHelp(blue(c));
+    //    c = color(red, green, blue);
+    //    imgN.pixels[index] = c;
+    //  }
+    //}
+    //updatePixels();
   }
 
   private float contrastHelp(float rgb) {
@@ -177,6 +201,7 @@ class IImage {//Interactive Image
   }
 
   private void blur(PImage imgO, PImage imgN) {
+    float balance = sliderValue * 2;
     float[][] blurKernel = {{.0625, .125, .0625}, {.125, .25, .125}, {.0625, .125, .0625}};
     useKernel(blurKernel, imgO, imgN);
   }
@@ -304,5 +329,13 @@ class IImage {//Interactive Image
     }
     imgWidth = imgOriginal.width;
     imgHeight = imgOriginal.height;
+  }
+  
+  void changemode(int newMode){
+    mode = newMode;
+  }
+  
+  void getSliderValue(float value) {
+    sliderValue = value;
   }
 }

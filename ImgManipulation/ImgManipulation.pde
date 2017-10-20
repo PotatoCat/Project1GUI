@@ -1,7 +1,8 @@
-PImage img; //<>// //<>// //<>//
-IImage interactive;
+PImage img; //<>// //<>// //<>// //<>//
+public IImage interactive;
 HoverButton savebutton;
 Save saveFunction;
+Gui gui;
 
 // Added by Anna
 UnitTest unitTest;
@@ -14,6 +15,7 @@ void setup() {
   surface.setResizable(true);
   savebutton = new HoverButton(0, 0, 100, 50, "Save");
   saveFunction = new Save();
+  gui = new Gui();
 
   // Added by Anna
   size(1366, 768);
@@ -31,6 +33,7 @@ void draw() {
     //setLabels(temp, 100, height/2-(temp.height/2));
     resizeBTN.display(width-280, height/2);
     //surface.setSize(interactive.imgWidth, interactive.imgHeight+50);
+    gui.update();
   }
 
   if (interactive != null)
@@ -39,13 +42,17 @@ void draw() {
   //display save button
   savebutton.display();
   saveFunction.prompt();
+  gui.display();
+  
 }
 
 void mouseClicked() {
+  gui.isOver();
   //turns save function prompt on
   if (savebutton.mouseOver()) {
     saveFunction.flip();
   }
+  
     if (resizeBTN.mouseOver()) {
       originalWidth = interactive.imgOriginalReset.width;
       if (!resized) {

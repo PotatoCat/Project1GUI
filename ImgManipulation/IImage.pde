@@ -24,7 +24,6 @@ class IImage {//Interactive Image
     println("constructing " + currentMode);
     this.x = x;
     this.y = y;
-    assert img != null: "img is null in Iimage constructor";
     imgOriginal = img.copy();
     imgOriginalReset = img.copy();
     imgWidth = img.width;
@@ -50,7 +49,6 @@ class IImage {//Interactive Image
       imgCurrent = imgNew;
 
     image(imgCurrent, x, y);
-    setLabels(imgCurrent,x,y);
     //setLabels(imgNew, 100, height/2-(imgNew.height/2));
   }
 
@@ -64,7 +62,7 @@ class IImage {//Interactive Image
       imgCurrent = imgNew;
 
     image(imgCurrent, x, y);
-    setLabels(imgCurrent,x,y);
+    setSubLabels(imgCurrent,x,y);
   }
 
 //------------------------------------------------------------------------------------
@@ -267,31 +265,6 @@ class IImage {//Interactive Image
 
 //------------------------------------------------------------------------------------
 //Resizing
-
-  // code from imgResize for text, intructions, labels
-  void setLabels(PImage img, float imgXPos, float imgYPos) {
-  
-    fill(255);
-    noStroke();
-  
-    // Image Dimension Title
-    textAlign(CENTER);
-    textSize(30);
-    //text("Image Dimensions", width-200, height*.15);
-  
-    // Instructions
-    text("Instructions", width-200, height*.15);
-    textSize(16);
-    textAlign(LEFT);
-    text("Use Buttons Above to apply filters", width-300, 200);
-    text("Use Resize Button to resize", width-300, 240);
-    text("---", width-300, 280);
-  
-    // Height and Width subLabels
-    textAlign(LEFT);
-    textSize(15);
-    text(("H: " + img.height + " W: " + img.width), imgXPos, imgYPos + img.height + 15);
-  }
   
   // resizing will reset imgOriginal and imgNew to their original size/resolution, and then resize
   // this will keep the picture from losing quality with each resize
@@ -330,6 +303,15 @@ class IImage {//Interactive Image
     }
     imgWidth = imgOriginal.width;
     imgHeight = imgOriginal.height;
+  }
+  
+  // Sets Width and Height sublables under the image
+  void setSubLabels(PImage img, float imgXPos, float imgYPos) {
+    fill(255);
+    noStroke();
+    textAlign(LEFT);
+    textSize(15);
+    text(("H: " + img.height + " W: " + img.width), imgXPos, imgYPos + img.height + 15);
   }
   
   void changemode(int newMode){

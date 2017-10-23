@@ -23,6 +23,18 @@ public class UnitTest{
   }
   
 
+  public void testFileSelected(File selection) {
+    if (selection == null) {
+      println("Window was closed or the user hit cancel.");
+    } else {
+      println("User selected " + selection.getAbsolutePath());
+      assert selection.getAbsolutePath() != null: "Selection is null";
+      img = loadImage(selection.getAbsolutePath());
+      assert img != null : "img is null";
+      interactive = new IImage(0, 50, img);//move this line of code elsewhere if necessarry, supposed to create an IImage based on the new PImage
+      assert interactive != null: "interactive is null";
+    }
+  }
   
   public void runUnitTests(){
     testResizeByWidth(unitTestImg, 400);

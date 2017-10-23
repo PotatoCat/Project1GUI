@@ -6,12 +6,13 @@ class slider {
   boolean over; //is mouse over sliderbutton
   boolean locked; //is mouse over sliderbutton and held
   float ratio;
+  int count = 0;
 
-  slider(float xp, float yp, int sw, int sh){
+  slider(float xp, float yp, float sw, float sh){
     sliderWidth = sw;
     sliderHeight = sh;
-    int widthtoheight = sw - sh;
-    ratio = (float)sw / (float)widthtoheight;
+    float widthtoheight = sw - sh;
+    ratio = sw / widthtoheight;
     sliderX = xp;
     sliderY = yp-sliderHeight/2;
     buttonloc = sliderX;
@@ -38,10 +39,32 @@ class slider {
     if(abs(newloc - buttonloc) > 1){
       buttonloc = buttonloc + (newloc-buttonloc);
     }
-    interactive.getSliderValue((buttonloc - sliderMin)/(sliderMax-sliderMin));
+    interactive.setSliderValue((buttonloc - sliderMin)/(sliderMax-sliderMin));
   }
   
   void display(){
+    rectMode(CENTER);
+    noStroke();
+    fill(200);
+    rect(sliderX, sliderY, sliderWidth-2, sliderHeight);
+    if(over || locked){
+      fill(0,0,0);
+    }else{
+      fill(102,102,102);
+    }
+    rect(buttonloc, sliderY, sliderHeight, sliderHeight);
+  }
+  
+  void display(float xPos, float yPos){
+    if (sliderX != xPos || sliderY != (yPos-sliderHeight/2)){
+      float tempDiff = buttonloc - sliderMin;
+      sliderX = xPos;
+      sliderY = yPos-sliderHeight/2;
+      sliderMin = int(sliderX - sliderWidth/2 + sliderHeight/2);
+      sliderMax = int(sliderX + sliderWidth/2 - sliderHeight/2);
+      buttonloc = sliderMin + tempDiff;
+      newloc = buttonloc;
+    }
     rectMode(CENTER);
     noStroke();
     fill(200);

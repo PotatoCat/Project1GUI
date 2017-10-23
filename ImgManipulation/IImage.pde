@@ -69,12 +69,13 @@ class IImage {//Interactive Image
 
 //------------------------------------------------------------------------------------
 //Filters
+
   void changeFilter() {
     if (firstLoop) {
       image(imgOriginal, x, y);
       firstLoop = false;
     }
-    if (mode == 1) {
+    if (mode == 1 && currentMode != 1) {
       currentMode = 1;
       imgNew = createImage(imgWidth, imgHeight, ARGB);
       imgNewReset = createImage(imgOriginalReset.width, imgOriginalReset.height, ARGB);
@@ -82,7 +83,7 @@ class IImage {//Interactive Image
       greyscale(imgOriginalReset, imgNewReset);
       image(imgNew, x, y);
     }
-    if (mode == 2) {
+    if (mode == 2 && currentMode != 2) {
       currentMode = 2;
       imgNew = createImage(imgWidth, imgHeight, ARGB);
       imgNewReset = createImage(imgOriginalReset.width, imgOriginalReset.height, ARGB);
@@ -90,7 +91,7 @@ class IImage {//Interactive Image
       contrast(imgOriginalReset, imgNewReset);
       image(imgNew, x, y);
     }
-    if (mode == 3) {
+    if (mode == 3 && currentMode != 3) {
       currentMode = 3;
       imgNew = createImage(imgWidth, imgHeight, ARGB);
       imgNewReset = createImage(imgOriginalReset.width, imgOriginalReset.height, ARGB);
@@ -98,7 +99,7 @@ class IImage {//Interactive Image
       blur(imgOriginalReset, imgNewReset);
       image(imgNew, x, y);
     }
-    if (mode == 4) {
+    if (mode == 4 && currentMode != 4) {
       currentMode = 4;
       imgNew = createImage(imgWidth, imgHeight, ARGB);
       imgNewReset = createImage(imgOriginalReset.width, imgOriginalReset.height, ARGB);
@@ -106,7 +107,7 @@ class IImage {//Interactive Image
       edgeDetection(imgOriginalReset, imgNewReset);
       image(imgNew, x, y);
     }
-    if (mode == 5) {
+    if (mode == 5 && currentMode != 5) {
       currentMode = 5;
       imgNew = createImage(imgWidth, imgHeight, ARGB);
       imgNewReset = createImage(imgOriginalReset.width, imgOriginalReset.height, ARGB);
@@ -114,14 +115,14 @@ class IImage {//Interactive Image
       sharpen(imgOriginalReset, imgNewReset);
       image(imgNew, x, y);
     }
-    if (mode == 0) {
+    if (mode == 0 && currentMode != 0) {
       currentMode = 0;
       image(imgOriginal, x, y);
     }
   }
 
   private void greyscale(PImage imgO, PImage imgN) {//private method to perform the greyscale function on an image
-    loadPixels();
+    loadPixels(); //<>//
     float grey;
     for (int i = 0; i < imgO.height; i++) {
       for (int j = 0; j < imgO.width; j++) {
@@ -135,19 +136,19 @@ class IImage {//Interactive Image
         imgN.pixels[index] = c;
       }
     }
-    updatePixels();
+    updatePixels(); //<>//
   }
 
   private void contrast(PImage imgO, PImage imgN) {
   colorMode(HSB);
   imgO.loadPixels();
   imgN.loadPixels();
-  for(int x = 0; x < img.width; x++){
-    for(int y = 0; y < img.height; y++){
-      int index = x + img.width*y;
-      float hue = hue(img.pixels[index]);
-      float saturation = saturation(img.pixels[index]);
-      float brightness = brightness(img.pixels[index]);
+  for(int x = 0; x < imgO.width; x++){
+    for(int y = 0; y < imgO.height; y++){
+      int index = x + imgO.width*y;
+      float hue = hue(imgO.pixels[index]);
+      float saturation = saturation(imgO.pixels[index]);
+      float brightness = brightness(imgO.pixels[index]);
       if(brightness < 123){
         brightness = brightness - sliderValue*100;
       }else{
@@ -157,9 +158,9 @@ class IImage {//Interactive Image
       imgN.pixels[index] = color(hue, saturation, brightness);
     }
   }
-  imgN.updatePixels();
+  imgN.updatePixels(); //<>//
   colorMode(RGB);
-    
+
     //loadPixels();
     //for (int i = 0; i < imgO.height; i++) {
     //  for (int j = 0; j < imgO.width; j++) {
@@ -236,7 +237,7 @@ class IImage {//Interactive Image
   }
 
   private void useKernel(float[][] kernel, PImage imgO, PImage imgN) {
-    loadPixels();
+    loadPixels(); //<>//
     for (int i = 0; i < imgO.height; i++) {
       for (int j = 0; j < imgO.width; j++) {
         index = i + j*imgO.height;
@@ -260,7 +261,7 @@ class IImage {//Interactive Image
         imgN.pixels[index] = c;
       }
     }
-    updatePixels();
+    updatePixels(); //<>//
   }
 
 
@@ -282,9 +283,9 @@ class IImage {//Interactive Image
     text("Instructions", width-200, height*.15);
     textSize(16);
     textAlign(LEFT);
-    text("Press 0 for the original image", width-300, 200);
-    text("Press 1-5 for various filters", width-300, 240);
-    text("Press Resize button to toggle size", width-300, 280);
+    text("Use Buttons Above to apply filters", width-300, 200);
+    text("Use Resize Button to resize", width-300, 240);
+    text("---", width-300, 280);
   
     // Height and Width subLabels
     textAlign(LEFT);
@@ -335,7 +336,10 @@ class IImage {//Interactive Image
     mode = newMode;
   }
   
-  void getSliderValue(float value) {
-    sliderValue = value;
+  void setSliderValue(float value) {
+    if(sliderValue != value){
+      sliderValue = value;
+      currentMode = -1; // this will force changeFilter effects to go through, and reset the currentMode to Mode
+    }
   }
 }

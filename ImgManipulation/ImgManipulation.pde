@@ -26,23 +26,23 @@ void setup() {
 
 void draw() {
   background(50);
-  //assert interactive != null : "interactive is null in draw";
-  if (img != null && interactive != null) {
-    //image(img,-1,49);
-    interactive.display(100, height/2-(interactive.imgHeight/2));
-    //setLabels(temp, 100, height/2-(temp.height/2));
-    resizeBTN.display(width-280, height/2);
-    //surface.setSize(interactive.imgWidth, interactive.imgHeight+50);
-    gui.update();
-  }
-
-  if (interactive != null)
-    interactive.changeFilter();//allows for editing of the picture
-
+  
   //display save button
   savebutton.display();
   saveFunction.prompt();
   gui.display();
+  //assert interactive != null : "interactive is null in draw";
+  if (img != null && interactive != null) {
+    //image(img,-1,49);
+    interactive.display(100, height/2-(interactive.imgHeight/2)); //<>//
+    //setLabels(temp, 100, height/2-(temp.height/2));
+    resizeBTN.display(width-280, height/2);
+    //surface.setSize(interactive.imgWidth, interactive.imgHeight+50);
+    gui.update(); //<>//
+  }
+
+  if (interactive != null)
+    interactive.changeFilter();//allows for editing of the picture
   
 }
 

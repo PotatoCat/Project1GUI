@@ -7,9 +7,15 @@ class Gui{
   HoverButton edgedetection;
   HoverButton clearFilters;
   HoverButton savebutton;
+  HoverButton newFileBTN;
   HoverButton resizeBTN;
+  HoverButton cropBTN;
+  HoverButton resetBTN;
+  HoverButton runUnitTestsBTN;
+  Boolean includeUnitTests = false;
   String sliderName = "";
   boolean resized = false; // temporary will remove when we get user Input for resize working
+  boolean cropped = false; // temporary will remove when we get user Input for resize working
   
   
   Gui(){
@@ -21,7 +27,11 @@ class Gui{
     edgedetection = new HoverButton(width-600, 0, 200, 50, "Edge Detection");
     clearFilters = new HoverButton(width-750, 0, 150, 50, "Clear Filters");
     savebutton = new HoverButton(0, 0, 100, 50, "Save");
-    resizeBTN = new HoverButton(0, 0, 150, 50, "Resize");
+    newFileBTN = new HoverButton(0, 0, 150, 50, "New File");
+    resizeBTN = new HoverButton(0,0, 150, 50, "Resize");
+    cropBTN = new HoverButton(0,0, 150, 50, "Crop");
+    resetBTN = new HoverButton(0,0, 130, 50, "Reset");
+    runUnitTestsBTN = new HoverButton(0,0, 200, 50, "Run Unit Tests");
   }
   
   void display() {
@@ -34,7 +44,11 @@ class Gui{
     edgedetection.display(width-600, 0);
     clearFilters.display(width-750,0);    
     savebutton.display();
-    resizeBTN.display(width-280, height/2);
+    newFileBTN.display(100,0);
+    resizeBTN.display(width-350, 320);
+    cropBTN.display(width-350, 380);
+    resetBTN.display(width-140, height-100);
+    if(includeUnitTests) {runUnitTestsBTN.display(width-350, height-100);}
   
     // slider label
     fill(255);
@@ -57,23 +71,29 @@ class Gui{
     noStroke();
   
     // Image Dimension Title
-    textAlign(CENTER);
+    textAlign(LEFT);
     textSize(30);
     //text("Image Dimensions", width-200, height*.15);
   
     // Instructions
-    text("Instructions", width-200, height*.15);
+    text("Instructions", width-350, 160);
     textSize(16);
-    textAlign(LEFT);
-    text("Use Buttons Above to apply filters", width-300, 200);
-    text("Use Resize Button to resize", width-300, 240);
-    text("Use Slider to Adjust Filter if Applicable", width-300, 280);
+    text("Use Buttons Above to apply filters", width-350, 200);
+    text("Use Resize Button to resize", width-350, 240);
+    text("Use Slider to Adjust Filter if Applicable", width-350, 280);
+ }
+ 
+ public void toggleUnitTests(Boolean tf){
+   includeUnitTests = tf;
  }
   
   void isOver(){   
     //turns save function prompt on
     if (savebutton.mouseOver()) {
       saveFunction.flip();
+    } 
+    else if (newFileBTN.mouseOver()) {
+      selectInput("Select a file to process:", "fileSelected");
     } 
     // sets filters
     else if(greyscale.mouseOver()){
@@ -110,6 +130,19 @@ class Gui{
           interactive.resizeByWidth(originalWidth);
           resized = false;
         }
+    }    
+    else if(cropBTN.mouseOver()) {
+        if (!cropped) {
+          interactive.cropImg(interactive.imgWidth*0.3,interactive.imgWidth*0.3,interactive.imgWidth*0.5, interactive.imgHeight*0.5);
+          cropped = true;
+        } 
+    }    
+    else if(resetBTN.mouseOver()) {
+      interactive.resetImg();
+      cropped = false;
+    } 
+    else if (includeUnitTests && runUnitTestsBTN.mouseOver()) {
+      unitTest.runUnitTests();
     }
   }
 }

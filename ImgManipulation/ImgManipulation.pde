@@ -2,7 +2,7 @@ PImage img; //<>// //<>// //<>// //<>//
 public IImage interactive;
 Save saveFunction;
 Gui gui;
-UnitTest unitTest;
+public UnitTest unitTest;
 
 void setup() {
   selectInput("Select a file to process:", "fileSelected");
@@ -11,13 +11,13 @@ void setup() {
   gui = new Gui();
   size(1366, 768);
   background(50);
+  
   unitTest = new UnitTest();
+  gui.toggleUnitTests(true);
 }
 
 void draw() {
   background(50);
-  gui.display();
- 
   if (img != null && interactive != null) {
     //image(img,-1,49);
     interactive.display(100, height/2-(interactive.imgHeight/2));  //<>//
@@ -25,7 +25,9 @@ void draw() {
     gui.update(); //<>//
   }
   if (interactive != null)
-    interactive.changeFilter();//allows for editing of the picture  
+    interactive.changeFilter();//allows for editing of the picture
+    
+  gui.display();
   saveFunction.prompt();
 }
 

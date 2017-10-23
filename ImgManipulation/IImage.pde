@@ -16,9 +16,13 @@ class IImage {//Interactive Image
   int imgHeight;
   int currentMode = 0;
   boolean firstLoop = true; //used to draw the initial image once so that unspecified keys do not reset the image
+  boolean cropped = false;
+  FloatList cropParam;
+  
   
   int mode = 0;
   float sliderValue = 0;
+  
 
   IImage(int x, int y, PImage img) {
     println("constructing " + currentMode);
@@ -28,6 +32,7 @@ class IImage {//Interactive Image
     imgOriginalReset = img.copy();
     imgWidth = img.width;
     imgHeight = img.height;
+    cropParam = new FloatList();
   }
 
   IImage(PImage img) {
@@ -37,8 +42,7 @@ class IImage {//Interactive Image
     imgOriginalReset = img.copy();
     imgWidth = img.width;
     imgHeight = img.height;
-    imgWidth = img.width;
-    imgHeight = img.height;
+    cropParam = new FloatList();
   }
 
   void display() {
@@ -277,6 +281,9 @@ class IImage {//Interactive Image
       imgNew = imgNewReset.copy();
       imgNew.resize(int(w), int(w/ratio));
     }
+    if (cropped){
+      cropImg(cropParam.get(0), cropParam.get(1), cropParam.get(2), cropParam.get(3));
+    }
     imgWidth = imgOriginal.width;
     imgHeight = imgOriginal.height;
   }
@@ -288,6 +295,9 @@ class IImage {//Interactive Image
     if(imgNew != null) {
       imgNew = imgNewReset.copy();
       imgNew.resize(int(h*ratio), int(h));
+    }
+    if (cropped){
+      cropImg(cropParam.get(0), cropParam.get(1), cropParam.get(2), cropParam.get(3));
     }
     imgWidth = imgOriginal.width;
     imgHeight = imgOriginal.height;
@@ -301,6 +311,34 @@ class IImage {//Interactive Image
       imgNew = imgNewReset.copy();
       imgNew.resize(int(w), int(h));
     }
+    if (cropped){
+      cropImg(cropParam.get(0), cropParam.get(1), cropParam.get(2), cropParam.get(3));
+    }
+    imgWidth = imgOriginal.width;
+    imgHeight = imgOriginal.height;
+  }
+  
+  public void cropImg(float xPixel, float yPixel, float w, float h){
+    cropped = true;
+    cropParam.set(0, xPixel);
+    cropParam.set(1, yPixel);
+    cropParam.set(2, w);
+    cropParam.set(3, h);
+    imgOriginal = imgOriginal.get(int(xPixel), int(yPixel), int(w), int(h));
+    if(imgNew != null) {
+      imgNew = get(int(xPixel), int(yPixel), int(w), int(h));
+    }
+  }
+  
+  public void resetImg(){
+    imgOriginal = imgOriginalReset.copy();
+    if(imgNew != null) {
+      imgNew = imgNewReset.copy();
+    }
+    mode = 0;
+    currentMode = 0;
+    cropped = false;
+    sliderValue = 0;
     imgWidth = imgOriginal.width;
     imgHeight = imgOriginal.height;
   }

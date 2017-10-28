@@ -189,7 +189,11 @@ class Gui{
     }
     else if(blur.mouseOver()){
       interactive.changemode(3);
+<<<<<<< HEAD
       sliderName = "Blur";
+=======
+      sliderName = "Blur";//"Blur"; to be Added
+>>>>>>> 98a315967da7772c9bb05127d344005cccd31bd1
     }
     else if(edgedetection.mouseOver()){
       interactive.changemode(4);
@@ -197,7 +201,11 @@ class Gui{
     }
     else if(sharpen.mouseOver()){
       interactive.changemode(5);
+<<<<<<< HEAD
       sliderName = "Sharpen";
+=======
+      sliderName = "Sharpen";//"Sharpen"; to be Added
+>>>>>>> 98a315967da7772c9bb05127d344005cccd31bd1
     }
     else if(clearFilters.mouseOver()) {
       interactive.changemode(0);

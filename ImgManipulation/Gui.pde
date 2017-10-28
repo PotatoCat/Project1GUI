@@ -190,7 +190,6 @@ class Gui{
     else if(blur.mouseOver()){
       interactive.changemode(3);
       sliderName = "Blur";
-      sliderName = "Blur";//"Blur"; to be Added
     }
     else if(edgedetection.mouseOver()){
       interactive.changemode(4);
@@ -199,7 +198,6 @@ class Gui{
     else if(sharpen.mouseOver()){
       interactive.changemode(5);
       sliderName = "Sharpen";
-      sliderName = "Sharpen";//"Sharpen"; to be Added
     }
     else if(clearFilters.mouseOver()) {
       interactive.changemode(0);

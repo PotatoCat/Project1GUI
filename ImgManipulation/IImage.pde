@@ -205,7 +205,7 @@ class IImage {//Interactive Image
 
   private void blur(PImage imgO, PImage imgN) {
     float balance = sliderValue * 2;
-    float[][] blurKernel = {{.0625, .125, .0625}, {.125, .25, .125}, {.0625, .125, .0625}};
+    float[][] blurKernel = {{sliderValue*.0625, sliderValue*.125, sliderValue*.0625}, {sliderValue*.125, 1- .75*sliderValue, sliderValue*.125}, {sliderValue*.0625, sliderValue*.125, sliderValue*.0625}};
     useKernel(blurKernel, imgO, imgN);
   }
 
@@ -234,7 +234,7 @@ class IImage {//Interactive Image
   }
 
   private void sharpen(PImage imgO, PImage imgN) {
-    float[][] sharpen = {{0, -1, 0}, {-1, 5, -1}, {0, -1, 0}};
+    float[][] sharpen = {{0, 0 - 1*sliderValue, 0}, {0 - 1*sliderValue, 1 + 4*sliderValue, 0 - 1*sliderValue}, {0, 0 - 1*sliderValue, 0}};
     useKernel(sharpen, imgO, imgN);
   }
 

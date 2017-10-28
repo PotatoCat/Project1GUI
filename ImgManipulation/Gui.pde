@@ -12,6 +12,17 @@ class Gui{
   HoverButton cropBTN;
   HoverButton resetBTN;
   HoverButton runUnitTestsBTN;
+  HoverButton history;
+  HoverButton button1;
+  HoverButton button2;
+  HoverButton button3;
+  HoverButton button4;
+  HoverButton button5;
+  boolean button1show;
+  boolean button2show;
+  boolean button3show;
+  boolean button4show;
+  boolean button5show;
   Boolean includeUnitTests = false;
   String sliderName = "";
   boolean resized = false; // temporary will remove when we get user Input for resize working
@@ -32,6 +43,14 @@ class Gui{
     cropBTN = new HoverButton(0,0, 150, 50, "Crop");
     resetBTN = new HoverButton(0,0, 130, 50, "Reset");
     runUnitTestsBTN = new HoverButton(0,0, 200, 50, "Run Unit Tests");
+    history = new HoverButton(width-850, 0,100,50, "History");
+    
+    //History buttons
+    button1 = new HoverButton(width - 550, height - 175, 100, 50, "Image 1");
+    button2 = new HoverButton(width - 450, height - 175, 100, 50, "Image 2");
+    button3 = new HoverButton(width - 350, height - 175, 100, 50, "Image 3");
+    button4 = new HoverButton(width - 250, height - 175, 100, 50, "Image 4");
+    button5 = new HoverButton(width - 150, height - 175, 100, 50, "Image 5");
   }
   
   void display() {
@@ -48,6 +67,22 @@ class Gui{
     resizeBTN.display(width-350, 320);
     cropBTN.display(width-350, 380);
     resetBTN.display(width-140, height-100);
+    history.display();
+    if(button1show){
+      button1.display();
+    }
+    if(button2show){
+      button2.display();
+    }
+    if(button3show){
+      button3.display();
+    }
+    if(button4show){
+      button4.display();
+    }
+    if(button5show){
+      button5.display();
+    }
     if(includeUnitTests) {runUnitTestsBTN.display(width-350, height-100);}
   
     // slider label
@@ -87,9 +122,57 @@ class Gui{
    includeUnitTests = tf;
  }
   
-  void isOver(){   
+  void isOver(){
+    if(savebutton.mouseOver() || newFileBTN.mouseOver() || greyscale.mouseOver() || contrast.mouseOver() 
+    || blur.mouseOver() || edgedetection.mouseOver() || sharpen.mouseOver() || clearFilters.mouseOver() ||
+    resizeBTN.mouseOver() || cropBTN.mouseOver() || resetBTN.mouseOver() || runUnitTestsBTN.mouseOver()){
+      button1show = false;
+      button2show = false;
+      button3show = false;
+      button4show = false;
+      button5show = false;
+    }
+    if(history.mouseOver()){
+      //array is a dummy array please replace with array of images
+      int[] array = new int[]{0,1,2,3,4};
+      for(int i = 0; i <= array.length; i += 1){
+        if(i == 1){
+          button1show = true;
+        }
+        if(i == 2){
+          button2show = true;
+        }
+        if(i == 3){
+          button3show = true;
+        }
+        if(i == 4){
+          button4show = true;
+        }
+        if(i == 5){
+          button5show = true;
+        }
+      }
+    }
+    
+    
+    
+    //These are the History buttons put in your image calls from the array here
+    if(button1show && button1.mouseOver()){
+    }
+    else if(button2show && button2.mouseOver()){
+    }
+    else if(button3show && button3.mouseOver()){
+    }
+    else if(button4show && button4.mouseOver()){
+    }
+    else if(button5show && button5.mouseOver()){
+    }
+    
+    
+    
+    
     //turns save function prompt on
-    if (savebutton.mouseOver()) {
+    else if (savebutton.mouseOver()) {
       saveFunction.flip();
     } 
     else if (newFileBTN.mouseOver()) {
@@ -106,7 +189,7 @@ class Gui{
     }
     else if(blur.mouseOver()){
       interactive.changemode(3);
-      sliderName = "";//"Blur"; to be Added
+      sliderName = "Blur";
     }
     else if(edgedetection.mouseOver()){
       interactive.changemode(4);
@@ -114,7 +197,7 @@ class Gui{
     }
     else if(sharpen.mouseOver()){
       interactive.changemode(5);
-      sliderName = "";//"Sharpen"; to be Added
+      sliderName = "Sharpen";
     }
     else if(clearFilters.mouseOver()) {
       interactive.changemode(0);

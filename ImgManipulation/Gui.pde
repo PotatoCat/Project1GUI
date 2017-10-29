@@ -1,3 +1,6 @@
+import static javax.swing.JOptionPane.*;
+import javax.swing.*;
+
 class Gui{
   public slider Slider;
   HoverButton greyscale;
@@ -205,6 +208,8 @@ class Gui{
     }    
     // resizes image
     else if (resizeBTN.mouseOver()) {
+      showResizeInput();
+      /*
         float originalWidth = interactive.imgOriginalReset.width;
         if (!resized) {
           interactive.resizeByWidth(originalWidth*0.5);
@@ -213,6 +218,7 @@ class Gui{
           interactive.resizeByWidth(originalWidth);
           resized = false;
         }
+      */
     }    
     else if(cropBTN.mouseOver()) {
         if (!cropped) {
@@ -228,4 +234,59 @@ class Gui{
       unitTest.runUnitTests();
     }
   }
+  
+  
+  void showResizeInput(){
+    String[] resizeOptions = {"Resize By Width (Fixed Aspect Ratio)", "Resize By Height (Fixed Aspect Ratio)", "Resize Manually"};
+    
+    JFrame frame = new JFrame("Resize Options");
+    String resizeOptionChoice = (String) JOptionPane.showInputDialog(frame,
+      "How would you like to resize the image?",
+      "Resize Options",
+      JOptionPane.QUESTION_MESSAGE,
+      null,
+      resizeOptions,
+      resizeOptions[0]);
+      
+      // take input for width, height relative to option selected
+      if(resizeOptionChoice != null){
+        String resizeType = "";
+        if (resizeOptionChoice == resizeOptions[0]) // if resizeByWidth
+          resizeType = "Width";
+        else if (resizeOptionChoice == resizeOptions[1]) // else if resizeByHeight
+          resizeType = "Height";
+        else if (resizeOptionChoice == resizeOptions[2]) // else if resizeManual
+          resizeType = "Manual";
+        
+        String resizeQuery = resizeType;
+        if (resizeType == "Manual") {resizeQuery = "Width";}
+         
+        String input = showInputDialog("Enter new " + resizeQuery);
+        float resizeParameter1 = parseFloat(input == null? "" : input, MIN_INT);
+         
+        if (input == null)  showMessageDialog(null, "You didn't enter anything!", "Alert", ERROR_MESSAGE);
+        else if (resizeParameter1 == MIN_INT)  showMessageDialog(null, "Entry \"" + input + "\" isn't a number!", "Alert", ERROR_MESSAGE);
+        else showMessageDialog(null, "New " + resizeType + " " + resizeParameter1 + " has been registered.", "Info", INFORMATION_MESSAGE);
+        
+        // if resizing manually take a second input for height
+        if(resizeType == "Manual"){
+          String input2 = showInputDialog("Enter new Height");
+          float resizeParameter2 = parseFloat(input == null? "" : input, MIN_INT);
+           
+          if (input == null)  showMessageDialog(null, "You didn't enter anything!", "Alert", ERROR_MESSAGE);
+          else if (resizeParameter2 == MIN_INT)  showMessageDialog(null, "Entry \"" + input + "\" isn't a number!", "Alert", ERROR_MESSAGE);
+          else showMessageDialog(null, "New Height " + resizeParameter2 + " has been registered.", "Info", INFORMATION_MESSAGE);
+        
+          interactive.resizeManual(resizeParameter1, resizeParameter2);
+        }
+        
+        // else resize by selected width or height
+        else if(resizeType == "Width") { interactive.resizeByWidth(resizeParameter1); }
+        else if(resizeType == "Height") { interactive.resizeByHeight(resizeParameter1);}        
+    }
+  }
+  
 }
+
+
+ 

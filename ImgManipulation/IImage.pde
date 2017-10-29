@@ -359,7 +359,7 @@ class IImage {//Interactive Image
   }
   
   // just resize
-  public void resizeImg(float w, float h){
+  public void resizeManual(float w, float h){
     imgOriginal = imgOriginalReset.copy();
     imgOriginal.resize(int(w), int(h));
     if(imgNew != null) {

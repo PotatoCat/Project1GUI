@@ -117,6 +117,33 @@ class IImage {//Interactive Image
       sharpen(imgOriginalReset, imgNewReset);
       image(imgNew, x, y);
     }
+    if (mode == 6 && currentMode != 6) {
+      currentMode = 6;
+      currentMode = 5;
+      imgNew = createImage(imgWidth, imgHeight, ARGB);
+      imgNewReset = createImage(imgOriginalReset.width, imgOriginalReset.height, ARGB);
+      tint("red", imgOriginal, imgNew);
+      tint("red", imgOriginalReset, imgNewReset);
+      image(imgNew, x, y);
+    }
+    if (mode == 7 && currentMode != 7) {
+      currentMode = 7;
+      currentMode = 5;
+      imgNew = createImage(imgWidth, imgHeight, ARGB);
+      imgNewReset = createImage(imgOriginalReset.width, imgOriginalReset.height, ARGB);
+      tint("green", imgOriginal, imgNew);
+      tint("green", imgOriginalReset, imgNewReset);
+      image(imgNew, x, y);
+    }
+    if (mode == 8 && currentMode != 8) {
+      currentMode = 8;
+      currentMode = 5;
+      imgNew = createImage(imgWidth, imgHeight, ARGB);
+      imgNewReset = createImage(imgOriginalReset.width, imgOriginalReset.height, ARGB);
+      tint("blue", imgOriginal, imgNew);
+      tint("blue", imgOriginalReset, imgNewReset);
+      image(imgNew, x, y);
+    }
     if (mode == 0 && currentMode != 0) {
       currentMode = 0;
       image(imgOriginal, x, y);
@@ -264,6 +291,34 @@ class IImage {//Interactive Image
       }
     }
     updatePixels(); //<>//
+  }
+  
+  private void tint(String shade, PImage imgO, PImage imgN) {
+    loadPixels();
+    for (int i = 0; i < imgO.height; i++) {
+      for (int j = 0; j < imgO.width; j++) {
+        index = i + j*imgO.height;
+        c = imgO.pixels[index];
+        red = red(c);
+        green = green(c);
+        blue = blue(c);
+      }
+      if(shade.equals("red")) {
+        red += sliderValue*255;
+        red = constrain(abs(red), 0, 255);
+      }
+      if(shade.equals("green")) {
+        green += sliderValue*255;
+        green = constrain(abs(green), 0, 255);
+      }
+      if(shade.equals("blue")) {
+        blue += sliderValue*255;
+        blue = constrain(abs(blue), 0, 255);
+      }
+      c = color(red, green, blue);
+      imgN.pixels[index] = c;
+    }
+    updatePixels();
   }
 
 

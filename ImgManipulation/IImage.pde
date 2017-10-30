@@ -5,6 +5,8 @@ class IImage {//Interactive Image
   PImage imgNew;
   private final PImage imgOriginalReset; // the original image preserved and unmodified
   private PImage imgNewReset; // an unresized version of imgNew, will be filtered along with imgNew but never resized.
+  
+  PImage[] history = new PImage[5];
 
   color c;
   float red;
@@ -30,6 +32,9 @@ class IImage {//Interactive Image
     this.y = y;
     imgOriginal = img.copy();
     imgOriginalReset = img.copy();
+    for(int index = 0; index < history.length; index++) {
+      history[index] = img.copy();
+    }
     imgWidth = img.width;
     imgHeight = img.height;
     cropParam = new FloatList();
@@ -40,6 +45,9 @@ class IImage {//Interactive Image
     this.y = 0;
     imgOriginal = img.copy();
     imgOriginalReset = img.copy();
+    for(int index = 0; index < history.length; x++) {
+      history[index] = img.copy();
+    }
     imgWidth = img.width;
     imgHeight = img.height;
     cropParam = new FloatList();
@@ -67,6 +75,21 @@ class IImage {//Interactive Image
 
     image(imgCurrent, x, y);
     setSubLabels(imgCurrent,x,y);
+  }
+  
+//------------------------------------------------------------------------------------
+//History
+  
+  void displayHistory(int index) {
+    imgNew = history[index].copy();
+    image(imgNew, x, y);
+  }
+  
+  void addToHistory() {
+    for(int index = 5; index >= 1; index--) {
+      history[index] = [history[index-1].copy();
+    }
+    history[0] = imgNew.copy();
   }
 
 //------------------------------------------------------------------------------------

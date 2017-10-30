@@ -3,6 +3,7 @@ public IImage interactive;
 Save saveFunction;
 Gui gui;
 public UnitTest unitTest;
+PImage[] history = new PImage[5];
 
 void setup() {
   selectInput("Select a file to process:", "fileSelected");

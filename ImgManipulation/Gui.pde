@@ -15,7 +15,7 @@ class Gui{
   HoverButton cropBTN;
   HoverButton resetBTN;
   HoverButton runUnitTestsBTN;
-  HoverButton history;
+  HoverButton historybutton;
   HoverButton button1;
   HoverButton button2;
   HoverButton button3;
@@ -46,7 +46,7 @@ class Gui{
     cropBTN = new HoverButton(0,0, 150, 50, "Crop");
     resetBTN = new HoverButton(0,0, 130, 50, "Reset");
     runUnitTestsBTN = new HoverButton(0,0, 200, 50, "Run Unit Tests");
-    history = new HoverButton(width-850, 0,100,50, "History");
+    historybutton = new HoverButton(width-850, 0,100,50, "History");
     
     //History buttons
     button1 = new HoverButton(width - 550, height - 175, 100, 50, "Image 1");
@@ -70,7 +70,7 @@ class Gui{
     resizeBTN.display(width-350, 320);
     cropBTN.display(width-350, 380);
     resetBTN.display(width-140, height-100);
-    history.display();
+    historybutton.display();
     if(button1show){
       button1.display();
     }
@@ -135,10 +135,9 @@ class Gui{
       button4show = false;
       button5show = false;
     }
-    if(history.mouseOver()){
+    if(historybutton.mouseOver()){
       //array is a dummy array please replace with array of images
-      int[] array = new int[]{0,1,2,3,4};
-      for(int i = 0; i <= array.length; i += 1){
+      for(int i = 0; i <= history.length; i += 1){
         if(i == 1){
           button1show = true;
         }

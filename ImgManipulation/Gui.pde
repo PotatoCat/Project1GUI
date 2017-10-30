@@ -1,7 +1,7 @@
 import static javax.swing.JOptionPane.*;
 import javax.swing.*;
 
-class Gui{
+public class Gui{
   public slider Slider;
   HoverButton greyscale;
   HoverButton contrast;
@@ -15,6 +15,9 @@ class Gui{
   HoverButton cropBTN;
   HoverButton resetBTN;
   HoverButton runUnitTestsBTN;
+  HoverButton tintRed;
+  HoverButton tintGreen;
+  HoverButton tintBlue;
   HoverButton history;
   HoverButton button1;
   HoverButton button2;
@@ -33,6 +36,7 @@ class Gui{
   int mouseXf, mouseYf; // final mouse position for crop
   float [] cropSelectionInputs;
   boolean validCropSelection;
+  public String alertText;
   
   
   Gui(){
@@ -49,11 +53,16 @@ class Gui{
     cropBTN = new HoverButton(0,0, 150, 50, "Crop");
     resetBTN = new HoverButton(0,0, 130, 50, "Reset");
     runUnitTestsBTN = new HoverButton(0,0, 200, 50, "Run Unit Tests");
-    history = new HoverButton(width-850, 0,100,50, "History");
+    //history = new HoverButton(width-850, 0,100,50, "History");
+    
+    //tintRed = new HoverButton(0,0, 150,50, "Red");
+    //tintGreen = new HoverButton(0,0, 150,50, "Green");
+    //tintBlue = new HoverButton(0,0, 150,50, "Blue");
     
     mouseXi = 0; mouseYi = 0; mouseXf = 0; mouseYf = 0;
     cropSelectionInputs = new float[4];
     validCropSelection = false;
+    alertText = "";
     
     //History buttons
     button1 = new HoverButton(width - 550, height - 175, 100, 50, "Image 1");
@@ -77,6 +86,11 @@ class Gui{
     resizeBTN.display(width-350, 320);
     cropBTN.display(width-350, 380);
     resetBTN.display(width-140, height-100);
+    
+    //tintRed.display(0, height-50);
+    //tintGreen.display(150, height-50);
+    //tintBlue.display(300, height-50);
+    
     //history.display(width-850, 0);
     if(button1show){
       button1.display(width - 550, height - 175);
@@ -129,6 +143,7 @@ class Gui{
     text("Use Buttons Above to apply filters", width-350, 200);
     text("Use Resize Button to resize", width-350, 240);
     text("Use Slider to Adjust Filter if Applicable", width-350, 280);
+    text(alertText, width - 350, 450);
  }
  
  public void toggleUnitTests(Boolean tf){
@@ -136,6 +151,7 @@ class Gui{
  }
   
   void isOver(){
+    alertText = "";
     if(savebutton.mouseOver() || newFileBTN.mouseOver() || greyscale.mouseOver() || contrast.mouseOver() 
     || blur.mouseOver() || edgedetection.mouseOver() || sharpen.mouseOver() || clearFilters.mouseOver() ||
     resizeBTN.mouseOver() || cropBTN.mouseOver() || resetBTN.mouseOver() || runUnitTestsBTN.mouseOver()){
@@ -350,12 +366,9 @@ class Gui{
       cropSelectionInputs[2] = abs(mouseXf - mouseXi);
       cropSelectionInputs[3] = abs(mouseYf - mouseYi);      
     }
-    else println("Invalid Crop Selection");
+    else{ alertText = "Invalid Crop Selection";}
   }
 
-  
-
-  
 }
 
 

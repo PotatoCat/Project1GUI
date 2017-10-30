@@ -32,7 +32,7 @@ class IImage {//Interactive Image
     imgOriginalReset = img.copy();
     imgWidth = img.width;
     imgHeight = img.height;
-    cropParam = new FloatList();
+    cropParam = new FloatList(x, y, imgWidth, imgHeight);
   }
 
   IImage(PImage img) {
@@ -42,7 +42,7 @@ class IImage {//Interactive Image
     imgOriginalReset = img.copy();
     imgWidth = img.width;
     imgHeight = img.height;
-    cropParam = new FloatList();
+    cropParam = new FloatList(x, y, imgWidth, imgHeight);
   }
 
   void display() {
@@ -134,7 +134,7 @@ class IImage {//Interactive Image
     }
     if (mode == 6 && currentMode != 6) {
       currentMode = 6;
-      currentMode = 5;
+      //currentMode = 5;
       imgNew = createImage(imgWidth, imgHeight, ARGB);
       imgNewReset = createImage(imgOriginalReset.width, imgOriginalReset.height, ARGB);
       tint("red", imgOriginal, imgNew);
@@ -143,7 +143,7 @@ class IImage {//Interactive Image
     }
     if (mode == 7 && currentMode != 7) {
       currentMode = 7;
-      currentMode = 5;
+      //currentMode = 5;
       imgNew = createImage(imgWidth, imgHeight, ARGB);
       imgNewReset = createImage(imgOriginalReset.width, imgOriginalReset.height, ARGB);
       tint("green", imgOriginal, imgNew);
@@ -152,7 +152,7 @@ class IImage {//Interactive Image
     }
     if (mode == 8 && currentMode != 8) {
       currentMode = 8;
-      currentMode = 5;
+      //currentMode = 5;
       imgNew = createImage(imgWidth, imgHeight, ARGB);
       imgNewReset = createImage(imgOriginalReset.width, imgOriginalReset.height, ARGB);
       tint("blue", imgOriginal, imgNew);
@@ -352,7 +352,7 @@ class IImage {//Interactive Image
       imgNew.resize(int(w), int(w/ratio));
     }
     if (cropped){
-      cropImg(cropParam.get(0), cropParam.get(1), cropParam.get(2), cropParam.get(3));
+      //cropImg(cropParam.get(0), cropParam.get(1), cropParam.get(2), cropParam.get(3));
     }
     imgWidth = imgOriginal.width;
     imgHeight = imgOriginal.height;
@@ -367,7 +367,7 @@ class IImage {//Interactive Image
       imgNew.resize(int(h*ratio), int(h));
     }
     if (cropped){
-      cropImg(cropParam.get(0), cropParam.get(1), cropParam.get(2), cropParam.get(3));
+      //cropImg(cropParam.get(0), cropParam.get(1), cropParam.get(2), cropParam.get(3));
     }
     imgWidth = imgOriginal.width;
     imgHeight = imgOriginal.height;
@@ -382,7 +382,7 @@ class IImage {//Interactive Image
       imgNew.resize(int(w), int(h));
     }
     if (cropped){
-      cropImg(cropParam.get(0), cropParam.get(1), cropParam.get(2), cropParam.get(3));
+      //cropImg(cropParam.get(0), cropParam.get(1), cropParam.get(2), cropParam.get(3));
     }
     imgWidth = imgOriginal.width;
     imgHeight = imgOriginal.height;
@@ -400,6 +400,10 @@ class IImage {//Interactive Image
     }
     imgWidth = int(w);
     imgHeight = int(h);
+    cropParam.set(0, x);
+    cropParam.set(1, y);
+    cropParam.set(2, imgWidth);
+    cropParam.set(3, imgHeight);
   }
   
   public void resetImg(){
@@ -413,6 +417,7 @@ class IImage {//Interactive Image
     sliderValue = 0;
     imgWidth = imgOriginal.width;
     imgHeight = imgOriginal.height;
+    cropParam = new FloatList(x, y, imgWidth, imgHeight);
   }
   
   // Sets Width and Height sublables under the image

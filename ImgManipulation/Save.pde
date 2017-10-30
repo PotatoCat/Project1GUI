@@ -9,6 +9,7 @@ String fileDest;
   
   void prompt(){
     if(wasSaveClicked){
+      textSize(14);
       textAlign(BASELINE);
       rectMode(CENTER);
       //create file dest text box

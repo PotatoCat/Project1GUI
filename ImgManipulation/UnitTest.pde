@@ -58,7 +58,6 @@ public class UnitTest{
     testResizeByWidth(400);
     testResizeByHeight(400);    
     print("Unit tests completed with no errors");
-    // add some more later to detail which unit tests failed or completed, and in what ways
   }
   
   // Methods being Tested

@@ -36,6 +36,12 @@ void mouseClicked() {
   gui.isOver();
 }
 
+void mouseReleased(){
+  if(gui.isOverBool()){
+    interactive.addToHistory(history);
+  }
+}
+
 void keyPressed() {
   //type file destination for save function
   saveFunction.type();

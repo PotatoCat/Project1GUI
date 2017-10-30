@@ -160,14 +160,34 @@ class Gui{
     
     //These are the History buttons put in your image calls from the array here
     if(button1show && button1.mouseOver()){
+      if(history[0] != null){
+        PImage imgNew = history[0].copy();
+        image(imgNew, 0, 50);
+      }
     }
-    else if(button2show && button2.mouseOver()){
+    else if(button2show && button2.mouseOver()){ 
+      if(history[1] != null){
+      PImage imgNew = history[1].copy();
+      image(imgNew, 0, 50);
+      }
     }
     else if(button3show && button3.mouseOver()){
+      if(history[2] != null){
+      PImage imgNew = history[2].copy();
+      image(imgNew, 0, 50);
+      }
     }
     else if(button4show && button4.mouseOver()){
+      if(history[3] != null){
+      PImage imgNew = history[3].copy();
+      image(imgNew, 0, 50);
+      }
     }
     else if(button5show && button5.mouseOver()){
+      if(history[4] != null){
+      PImage imgNew = history[4].copy();
+      image(imgNew, 0, 50);
+      }
     }
     
     
@@ -231,6 +251,16 @@ class Gui{
     } 
     else if (includeUnitTests && runUnitTestsBTN.mouseOver()) {
       unitTest.runUnitTests();
+    }
+  }
+  
+  boolean isOverBool(){
+    if(savebutton.mouseOver() || newFileBTN.mouseOver() || greyscale.mouseOver() || contrast.mouseOver() 
+    || blur.mouseOver() || edgedetection.mouseOver() || sharpen.mouseOver() || clearFilters.mouseOver() ||
+    resizeBTN.mouseOver() || cropBTN.mouseOver() || resetBTN.mouseOver() || runUnitTestsBTN.mouseOver() || Slider.overEvent()){
+      return true;
+    } else {
+      return false;
     }
   }
   

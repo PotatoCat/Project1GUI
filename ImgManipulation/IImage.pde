@@ -87,7 +87,7 @@ class IImage {//Interactive Image
   
   void addToHistory() {
     for(int index = 5; index >= 1; index--) {
-      history[index] = [history[index-1].copy();
+      history[index] = history[index-1].copy();
     }
     history[0] = imgNew.copy();
   }

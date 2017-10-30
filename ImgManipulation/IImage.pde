@@ -396,8 +396,10 @@ class IImage {//Interactive Image
     cropParam.set(3, h);
     imgOriginal = imgOriginal.get(int(xPixel), int(yPixel), int(w), int(h));
     if(imgNew != null) {
-      imgNew = get(int(xPixel), int(yPixel), int(w), int(h));
+      imgNew = imgNew.get(int(xPixel), int(yPixel), int(w), int(h));
     }
+    imgWidth = int(w);
+    imgHeight = int(h);
   }
   
   public void resetImg(){

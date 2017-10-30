@@ -28,8 +28,11 @@ class Gui{
   boolean button5show;
   Boolean includeUnitTests = false;
   String sliderName = "";
-  boolean resized = false; // temporary will remove when we get user Input for resize working
-  boolean cropped = false; // temporary will remove when we get user Input for resize working
+  boolean cropMode = false; // is the user trying to make a crop selection?
+  int mouseXi, mouseYi; // initial mouse position for crop
+  int mouseXf, mouseYf; // final mouse position for crop
+  float [] cropSelectionInputs;
+  boolean validCropSelection;
   
   
   Gui(){
@@ -47,6 +50,10 @@ class Gui{
     resetBTN = new HoverButton(0,0, 130, 50, "Reset");
     runUnitTestsBTN = new HoverButton(0,0, 200, 50, "Run Unit Tests");
     history = new HoverButton(width-850, 0,100,50, "History");
+    
+    mouseXi = 0; mouseYi = 0; mouseXf = 0; mouseYf = 0;
+    cropSelectionInputs = new float[4];
+    validCropSelection = false;
     
     //History buttons
     button1 = new HoverButton(width - 550, height - 175, 100, 50, "Image 1");
@@ -70,21 +77,21 @@ class Gui{
     resizeBTN.display(width-350, 320);
     cropBTN.display(width-350, 380);
     resetBTN.display(width-140, height-100);
-    history.display();
+    //history.display(width-850, 0);
     if(button1show){
-      button1.display();
+      button1.display(width - 550, height - 175);
     }
     if(button2show){
-      button2.display();
+      button2.display(width - 450, height - 175);
     }
     if(button3show){
-      button3.display();
+      button3.display(width - 350, height - 175);
     }
     if(button4show){
-      button4.display();
+      button4.display(width - 250, height - 175);
     }
     if(button5show){
-      button5.display();
+      button5.display(width - 150, height - 175);
     }
     if(includeUnitTests) {runUnitTestsBTN.display(width-350, height-100);}
   
@@ -97,6 +104,9 @@ class Gui{
     
     // instructions and other labels
     displayText();
+    
+    // crop selection box
+    showCropSelection();
   }
   
   void update() {
@@ -135,30 +145,28 @@ class Gui{
       button4show = false;
       button5show = false;
     }
-    if(history.mouseOver()){
-      //array is a dummy array please replace with array of images
-      int[] array = new int[]{0,1,2,3,4};
-      for(int i = 0; i <= array.length; i += 1){
-        if(i == 1){
-          button1show = true;
-        }
-        if(i == 2){
-          button2show = true;
-        }
-        if(i == 3){
-          button3show = true;
-        }
-        if(i == 4){
-          button4show = true;
-        }
-        if(i == 5){
-          button5show = true;
-        }
-      }
-    }
-    
-    
-    
+    //if(history.mouseOver()){
+    //  //array is a dummy array please replace with array of images
+    //  int[] array = new int[]{0,1,2,3,4};
+    //  for(int i = 0; i <= array.length; i += 1){
+    //    if(i == 1){
+    //      button1show = true;
+    //    }
+    //    if(i == 2){
+    //      button2show = true;
+    //    }
+    //    if(i == 3){
+    //      button3show = true;
+    //    }
+    //    if(i == 4){
+    //      button4show = true;
+    //    }
+    //    if(i == 5){
+    //      button5show = true;
+    //    }
+    //  }
+    //}
+
     //These are the History buttons put in your image calls from the array here
     if(button1show && button1.mouseOver()){
     }
@@ -170,10 +178,7 @@ class Gui{
     }
     else if(button5show && button5.mouseOver()){
     }
-    
-    
-    
-    
+   
     //turns save function prompt on
     else if (savebutton.mouseOver()) {
       saveFunction.flip();
@@ -209,26 +214,25 @@ class Gui{
     // resizes image
     else if (resizeBTN.mouseOver()) {
       showResizeInput();
-      /*
-        float originalWidth = interactive.imgOriginalReset.width;
-        if (!resized) {
-          interactive.resizeByWidth(originalWidth*0.5);
-          resized = true;
-        } else {
-          interactive.resizeByWidth(originalWidth);
-          resized = false;
-        }
-      */
     }    
     else if(cropBTN.mouseOver()) {
-        if (!cropped) {
-          interactive.cropImg(interactive.imgWidth*0.3,interactive.imgWidth*0.3,interactive.imgWidth*0.5, interactive.imgHeight*0.5);
-          cropped = true;
-        } 
+        if(!cropMode){
+          cropMode = true;
+        }
+        else{
+          setCropSelectionInputs();
+          if(validCropSelection) interactive.cropImg(cropSelectionInputs[0], cropSelectionInputs[1],cropSelectionInputs[2],cropSelectionInputs[3]);
+          cropMode = false;
+          validCropSelection = false;
+          mouseXi = 0; mouseYi = 0; mouseXf = 0; mouseYf = 0;
+        }
     }    
     else if(resetBTN.mouseOver()) {
       interactive.resetImg();
-      cropped = false;
+      interactive.changemode(0);
+      sliderName = "";
+      cropMode = false;
+      mouseXi = 0; mouseYi = 0; mouseXf = 0; mouseYf = 0;
     } 
     else if (includeUnitTests && runUnitTestsBTN.mouseOver()) {
       unitTest.runUnitTests();
@@ -262,18 +266,17 @@ class Gui{
         if (resizeType == "Manual") {resizeQuery = "Width";}
          
         String input = showInputDialog("Enter new " + resizeQuery);
-        float resizeParameter1 = parseFloat(input == null? "" : input, MIN_INT);
-         
+        float resizeParameter1 = parseFloat(input == null? "" : input, MIN_INT);      
         if (input == null)  showMessageDialog(null, "You didn't enter anything!", "Alert", ERROR_MESSAGE);
-         else if (resizeParameter1 == MIN_INT || resizeParameter1 <= 0)  showMessageDialog(null, "Entry needs to be a number greater than 0", "Alert", ERROR_MESSAGE);
-        else showMessageDialog(null, "New " + resizeType + " " + resizeParameter1 + " has been registered.", "Info", INFORMATION_MESSAGE);
+        else if (resizeParameter1 == MIN_INT || resizeParameter1 <= 0)  showMessageDialog(null, "Entry needs to be a number greater than 0", "Alert", ERROR_MESSAGE);
+        else showMessageDialog(null, "New " + resizeQuery + " " + resizeParameter1 + " has been registered.", "Info", INFORMATION_MESSAGE);
         
         // if resizing manually take a second input for height
         if(resizeType == "Manual"){
           String input2 = showInputDialog("Enter new Height");
-          float resizeParameter2 = parseFloat(input == null? "" : input, MIN_INT);
+          float resizeParameter2 = parseFloat(input == null? "" : input2, MIN_INT);
            
-          if (input == null)  showMessageDialog(null, "You didn't enter anything!", "Alert", ERROR_MESSAGE);
+          if (input2 == null)  showMessageDialog(null, "You didn't enter anything!", "Alert", ERROR_MESSAGE);
           else if (resizeParameter2 == MIN_INT || resizeParameter2 <= 0)  showMessageDialog(null, "Entry needs to be a number greater than 0", "Alert", ERROR_MESSAGE);
           else showMessageDialog(null, "New Height " + resizeParameter2 + " has been registered.", "Info", INFORMATION_MESSAGE);
         
@@ -287,6 +290,71 @@ class Gui{
         }
     }
   }
+  
+  void showCropSelection(){
+    if(cropMode){      
+      noFill();
+      stroke(0);
+      strokeWeight(5);
+      rectMode(CORNERS);
+      if(!(mouseXi == 0 && mouseYi == 0 && mouseXf == 0 && mouseYf == 0)){
+        rect(mouseXi, mouseYi, mouseXf, mouseYf);
+      }
+      strokeWeight(1);
+      
+      textSize(12);
+      text("Click and Drag to make crop selection", width - 350, 450);
+      text("When finished, click crop again", width - 350, 470);
+      
+    }
+    
+  }
+  
+  void cropMousePressed(){
+    if(cropMode && ! cropBTN.mouseOver()){
+      mouseXi = mouseX;
+      mouseYi = mouseY;
+    }
+  }
+  
+  void cropMouseDragged(){
+    if(cropMode  && ! cropBTN.mouseOver()){
+      mouseXf = mouseX;
+      mouseYf = mouseY;
+    }
+  }
+  
+  void setCropSelectionInputs(){
+    float topLeftX, topLeftY, bottomRightX, bottomRightY = 0;
+    
+    if(mouseXi < mouseXf) topLeftX = mouseXi;
+    else topLeftX = mouseXf;
+    
+    if(mouseYi < mouseYf) topLeftY = mouseYi;
+    else topLeftY = mouseYf;
+    
+    bottomRightX = topLeftX + abs(mouseXf - mouseXi);
+    bottomRightY = topLeftY + abs(mouseYf - mouseYi);
+    
+    // check if top left corner of rectangle selection is in the image
+    // check if the bottom right corner of the rectangle selection is in the iamge
+    if(topLeftX > interactive.x && topLeftY > interactive.y && topLeftX < interactive.x + interactive.imgWidth &&
+       topLeftY < interactive.y + interactive.imgHeight && bottomRightX > interactive.x && bottomRightY > interactive.y &&
+       bottomRightX < interactive.x + interactive.imgWidth && bottomRightY < interactive.y + interactive.imgHeight){
+         validCropSelection = true;
+       }
+
+    if(validCropSelection){  
+      cropSelectionInputs[0] = topLeftX - interactive.x;
+      cropSelectionInputs[1] = topLeftY - interactive.y;
+      cropSelectionInputs[2] = abs(mouseXf - mouseXi);
+      cropSelectionInputs[3] = abs(mouseYf - mouseYi);      
+    }
+    else println("Invalid Crop Selection");
+  }
+
+  
+
   
 }
 

@@ -36,6 +36,14 @@ void mouseClicked() {
   gui.isOver();
 }
 
+void mousePressed(){
+  gui.cropMousePressed();
+}
+
+void mouseDragged(){
+  gui.cropMouseDragged();
+}
+
 void keyPressed() {
   //type file destination for save function
   saveFunction.type();

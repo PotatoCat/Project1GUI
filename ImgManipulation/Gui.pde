@@ -265,7 +265,7 @@ class Gui{
         float resizeParameter1 = parseFloat(input == null? "" : input, MIN_INT);
          
         if (input == null)  showMessageDialog(null, "You didn't enter anything!", "Alert", ERROR_MESSAGE);
-        else if (resizeParameter1 == MIN_INT)  showMessageDialog(null, "Entry \"" + input + "\" isn't a number!", "Alert", ERROR_MESSAGE);
+         else if (resizeParameter1 == MIN_INT || resizeParameter1 <= 0)  showMessageDialog(null, "Entry needs to be a number greater than 0", "Alert", ERROR_MESSAGE);
         else showMessageDialog(null, "New " + resizeType + " " + resizeParameter1 + " has been registered.", "Info", INFORMATION_MESSAGE);
         
         // if resizing manually take a second input for height
@@ -274,15 +274,17 @@ class Gui{
           float resizeParameter2 = parseFloat(input == null? "" : input, MIN_INT);
            
           if (input == null)  showMessageDialog(null, "You didn't enter anything!", "Alert", ERROR_MESSAGE);
-          else if (resizeParameter2 == MIN_INT)  showMessageDialog(null, "Entry \"" + input + "\" isn't a number!", "Alert", ERROR_MESSAGE);
+          else if (resizeParameter2 == MIN_INT || resizeParameter2 <= 0)  showMessageDialog(null, "Entry needs to be a number greater than 0", "Alert", ERROR_MESSAGE);
           else showMessageDialog(null, "New Height " + resizeParameter2 + " has been registered.", "Info", INFORMATION_MESSAGE);
         
-          interactive.resizeManual(resizeParameter1, resizeParameter2);
+          if(resizeParameter1 > 0 && resizeParameter2 > 0){interactive.resizeManual(resizeParameter1, resizeParameter2);}
         }
         
         // else resize by selected width or height
-        else if(resizeType == "Width") { interactive.resizeByWidth(resizeParameter1); }
-        else if(resizeType == "Height") { interactive.resizeByHeight(resizeParameter1);}        
+        if(resizeParameter1 > 0) {
+          if(resizeType == "Width") { interactive.resizeByWidth(resizeParameter1); }
+          else if(resizeType == "Height") { interactive.resizeByHeight(resizeParameter1);}      
+        }
     }
   }
   

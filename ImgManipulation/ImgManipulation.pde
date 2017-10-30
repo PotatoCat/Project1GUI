@@ -36,12 +36,19 @@ void mouseClicked() {
   gui.isOver();
 }
 
+<<<<<<< HEAD
 void mousePressed(){
   gui.cropMousePressed();
 }
 
 void mouseDragged(){
   gui.cropMouseDragged();
+=======
+void mouseReleased(){
+  if(gui.isOverBool()){
+    interactive.addToHistory(history);
+  }
+>>>>>>> 3d55c7d96d8356e1829f2a16cc5f9754f49060c1
 }
 
 void keyPressed() {

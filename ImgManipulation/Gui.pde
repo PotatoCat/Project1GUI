@@ -15,7 +15,7 @@ class Gui{
   HoverButton cropBTN;
   HoverButton resetBTN;
   HoverButton runUnitTestsBTN;
-  HoverButton history;
+  HoverButton historybutton;
   HoverButton button1;
   HoverButton button2;
   HoverButton button3;
@@ -49,7 +49,7 @@ class Gui{
     cropBTN = new HoverButton(0,0, 150, 50, "Crop");
     resetBTN = new HoverButton(0,0, 130, 50, "Reset");
     runUnitTestsBTN = new HoverButton(0,0, 200, 50, "Run Unit Tests");
-    history = new HoverButton(width-850, 0,100,50, "History");
+    historybutton = new HoverButton(width-850, 0,100,50, "History");
     
     mouseXi = 0; mouseYi = 0; mouseXf = 0; mouseYf = 0;
     cropSelectionInputs = new float[4];
@@ -77,7 +77,11 @@ class Gui{
     resizeBTN.display(width-350, 320);
     cropBTN.display(width-350, 380);
     resetBTN.display(width-140, height-100);
+<<<<<<< HEAD
     //history.display(width-850, 0);
+=======
+    historybutton.display();
+>>>>>>> 3d55c7d96d8356e1829f2a16cc5f9754f49060c1
     if(button1show){
       button1.display(width - 550, height - 175);
     }
@@ -145,6 +149,7 @@ class Gui{
       button4show = false;
       button5show = false;
     }
+<<<<<<< HEAD
     //if(history.mouseOver()){
     //  //array is a dummy array please replace with array of images
     //  int[] array = new int[]{0,1,2,3,4};
@@ -167,16 +172,61 @@ class Gui{
     //  }
     //}
 
+=======
+    if(historybutton.mouseOver()){
+      //array is a dummy array please replace with array of images
+      for(int i = 0; i <= history.length; i += 1){
+        if(i == 1){
+          button1show = true;
+        }
+        if(i == 2){
+          button2show = true;
+        }
+        if(i == 3){
+          button3show = true;
+        }
+        if(i == 4){
+          button4show = true;
+        }
+        if(i == 5){
+          button5show = true;
+        }
+      }
+    }
+    
+    
+    
+>>>>>>> 3d55c7d96d8356e1829f2a16cc5f9754f49060c1
     //These are the History buttons put in your image calls from the array here
     if(button1show && button1.mouseOver()){
+      if(history[0] != null){
+        PImage imgNew = history[0].copy();
+        image(imgNew, 0, 50);
+      }
     }
-    else if(button2show && button2.mouseOver()){
+    else if(button2show && button2.mouseOver()){ 
+      if(history[1] != null){
+      PImage imgNew = history[1].copy();
+      image(imgNew, 0, 50);
+      }
     }
     else if(button3show && button3.mouseOver()){
+      if(history[2] != null){
+      PImage imgNew = history[2].copy();
+      image(imgNew, 0, 50);
+      }
     }
     else if(button4show && button4.mouseOver()){
+      if(history[3] != null){
+      PImage imgNew = history[3].copy();
+      image(imgNew, 0, 50);
+      }
     }
     else if(button5show && button5.mouseOver()){
+      if(history[4] != null){
+      PImage imgNew = history[4].copy();
+      image(imgNew, 0, 50);
+      }
     }
    
     //turns save function prompt on
@@ -236,6 +286,16 @@ class Gui{
     } 
     else if (includeUnitTests && runUnitTestsBTN.mouseOver()) {
       unitTest.runUnitTests();
+    }
+  }
+  
+  boolean isOverBool(){
+    if(savebutton.mouseOver() || newFileBTN.mouseOver() || greyscale.mouseOver() || contrast.mouseOver() 
+    || blur.mouseOver() || edgedetection.mouseOver() || sharpen.mouseOver() || clearFilters.mouseOver() ||
+    resizeBTN.mouseOver() || cropBTN.mouseOver() || resetBTN.mouseOver() || runUnitTestsBTN.mouseOver() || Slider.overEvent()){
+      return true;
+    } else {
+      return false;
     }
   }
   
